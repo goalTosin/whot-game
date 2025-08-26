@@ -48,14 +48,14 @@ function computerRando(base, cards, toPick) {
     }
   } else {
     let c = cards.find((c) => {
-      return placeable2(c, baseCard)&&c.num!==20;
+      return placeable2(c, baseCard) && c.num !== 20;
     });
     if (c) {
       return c;
     } else if (cards.some((c) => c.num === 20)) {
       let c = cards.find((c) => c.num === 20);
       if (c.num === 20) {
-        c.shape = computerRando.wants(cards)
+        c.shape = computerRando.wants(cards);
       }
       return c;
     } else {
@@ -64,8 +64,8 @@ function computerRando(base, cards, toPick) {
   }
 }
 computerRando.wants = (cards) => {
-return 'tsbpc'[Math.floor(Math.random()*5)]
-}
+  return "tsbpc"[Math.floor(Math.random() * 5)];
+};
 
 const engine = computerRando;
 
@@ -79,26 +79,27 @@ function computerPlay() {
     }
     baseCard = c;
     lastCompCard = c.shape + "-" + c.num;
-    if (toPick) {// for defense
-      toPick = 0
-      picked = 0
-    } else if (c.num === 2 || c.num === 5 || c.num === 14) {// for attack
+    if (toPick) {
+      // for defense
+      toPick = 0;
+      picked = 0;
+    } else if (c.num === 2 || c.num === 5 || c.num === 14) {
+      // for attack
       toPick = c.num === 2 ? 2 : c.num === 5 ? 3 : 1;
     }
     if (c.num === 1 || c.num === 8) {
       setTimeout(computerPlay, 500);
     } else {
-      nextTurn()
+      nextTurn();
     }
   };
   const mrkt = () => {
     let cc = market();
     computerCards.push(cc);
     addCard(true, cc.shape + "-" + cc.num);
-
-  }
+  };
   const pick = () => {
-    mrkt()
+    mrkt();
     picked += 1;
     if (toPick - picked === 0) {
       toPick = 0;
@@ -108,39 +109,36 @@ function computerPlay() {
   };
   //computer engine:random
 
-  let c = engine(baseCard, computerCards, toPick>0)
+  let c = engine(baseCard, computerCards, toPick > 0);
   console.log(c);
 
-  if (c=='') {
-      if (toPick> 0) {
+  if (c == "") {
+    if (toPick > 0) {
       for (let i = 0; i < toPick; i++) {
         setTimeout(pick, i * 500);
       }
-        
-      }else {
-        mrkt()
-        nextTurn()
-      }
-    
+    } else {
+      mrkt();
+      nextTurn();
+    }
   } else {
+    play(c);
+    console.log(c);
 
-      play(c)
-      console.log(c);
-    
-  //   let c = computerCards.find((c) => {
-  //     return placeable2(c, baseCard);
-  //   });
-  //   if (c) {
-  //     play(c);
-  //   } else if (computerCards.some((c) => c.num === 20)) {
-  //     play(computerCards.find((c) => c.num === 20));
-  //   } else {
-  //     let cc = market();
-  //     computerCards.push(cc);
-  //     addCard(true, cc.shape + "-" + cc.num);
-  //     lastCompCard = cc.shape + "-" + cc.num;
-  //     nextTurn();
-  //   }
+    //   let c = computerCards.find((c) => {
+    //     return placeable2(c, baseCard);
+    //   });
+    //   if (c) {
+    //     play(c);
+    //   } else if (computerCards.some((c) => c.num === 20)) {
+    //     play(computerCards.find((c) => c.num === 20));
+    //   } else {
+    //     let cc = market();
+    //     computerCards.push(cc);
+    //     addCard(true, cc.shape + "-" + cc.num);
+    //     lastCompCard = cc.shape + "-" + cc.num;
+    //     nextTurn();
+    //   }
   }
 }
 
@@ -176,13 +174,12 @@ function nextTurn() {
       //   toPick = 1
       //   picked = 0
       // }
-      console.log('computer turn');
+      console.log("computer turn");
       setWant(false);
       setTimeout(() => computerPlay(), 1000);
       lowerTurnInfo();
       playerTurn = false;
     } else {
-      
       playerTurn = true;
       raiseTurnInfo();
     }
@@ -213,8 +210,8 @@ async function init() {
   // if (baseCard.num === 20) {
   //   baseCard.shape ='tspbc'[Math.floor(Math.random()*5)]
   // }
-  if (baseCard.num === 20 ) {
-    baseCard.shape = engine.wants(computerCards)
+  if (baseCard.num === 20) {
+    baseCard.shape = engine.wants(computerCards);
   }
   setWant(baseCard.num === 20 ? baseCard.shape : false);
   // for (let i = 0; i < 8; i++) {
